@@ -1,13 +1,8 @@
 import path from "path";
 import fs from "fs/promises";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 import { nanoid } from "nanoid";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const contactsPath = path.join(__dirname, "db", "contacts.json");
+const contactsPath = path.resolve("db", "contacts.json");
 
 async function listContacts() {
     const contacts = await fs.readFile(contactsPath);
