@@ -2,10 +2,11 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
+import { configDotenv } from "dotenv";
 
 import contactsRouter from "./routes/contactsRouter.js";
 
-import { DB_HOST } from "./config.js";
+configDotenv();
 
 const app = express();
 
@@ -25,7 +26,7 @@ app.use((err, req, res, next) => {
 });
 
 
-mongoose.connect(DB_HOST)
+mongoose.connect(process.env.DB_HOST)
   .then(() => {
   app.listen(3000, () => {
   console.log("Server is running. Use our API on port: 3000");
