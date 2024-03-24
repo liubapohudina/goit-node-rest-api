@@ -1,4 +1,4 @@
-import { listContacts } from "../services/contactsServices.js";
+import { listContacts, addContact } from "../services/contactsServices.js";
 
 
 import HttpError from "../helpers/HttpError.js";
@@ -41,6 +41,7 @@ export const deleteContact = async (req, res, next) => {
 };
 
 export const createContact = async (req, res, next) => {
+    console.log(addContact)
     try {
         const result = await addContact(req.body);
         res.status(201).json(result);
@@ -64,3 +65,11 @@ export const updateContact = async (req, res, next) => {
         next(error);
     }
 };
+
+export const updateStatusContact = async (req, res, next) => {
+    try {
+        const { contactId, body } = req.params;
+    } catch (error) {
+        next(error)
+    }
+}

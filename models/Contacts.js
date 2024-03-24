@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { handleSaveError } from "./hooks.js";
 
 const contactSchema = new Schema(
     {
@@ -18,6 +19,8 @@ const contactSchema = new Schema(
     },
   }
 )
+
+contactSchema.post("save", handleSaveError)
 const Contact = model('contact', contactSchema);
 
 export default Contact;

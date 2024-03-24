@@ -3,9 +3,11 @@
 // import { nanoid } from "nanoid";
 
 // const contactsPath = path.resolve("db", "contacts.json");
-import Contact from "../models/Contacts.js";
+import Contact from '../models/Contacts.js';
 
 export const listContacts = () => Contact.find();
+export const addContact = data => Contact.create(data);
+//export const updateCont = (contactId, body) = Contact.findByIdAndUpdate(contactId, data)
 
 // async function listContacts() {
 //     const contacts = await fs.readFile(contactsPath);
