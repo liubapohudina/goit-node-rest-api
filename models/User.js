@@ -10,7 +10,7 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      match: emailRegepxp, 
+      match: emailRegepxp,
       required: [true, 'Email is required'],
       unique: true,
     },
@@ -23,10 +23,10 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    owner: {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-    }
+    // owner: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'user',
+    // }
   },
   { versionKey: false }
 );
