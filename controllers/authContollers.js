@@ -38,7 +38,6 @@ export const fetchLoginUser = async (req, res, next) => {
             throw HttpError(401, "Email or password is wrong");
         }
         const passwordCompare = await bcrypt.compare(password, user.password);
-        
         if (!passwordCompare) {
             throw HttpError(401, "Email or password is wrong");
         }
@@ -47,7 +46,7 @@ export const fetchLoginUser = async (req, res, next) => {
             id
         };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
-        console.log(token)
+        
         const responseBody = {
             token: token,
             user: {
