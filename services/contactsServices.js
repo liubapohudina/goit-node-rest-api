@@ -1,9 +1,9 @@
 
 import Contact from '../models/Contacts.js';
 
-export const listContacts = () => Contact.find();
+export const listContacts = filter => Contact.find(filter);
 export const addContact = data => Contact.create(data);
-export const getContactById = async (contactId) => Contact.findById(contactId);
-export const removeContact = async (contactId) => Contact.findByIdAndDelete(contactId);
-export const updateCont = async (contactId, data) => Contact.findByIdAndUpdate(contactId, data, {new: true});
+export const getContactById = filter => Contact.findOne(filter);
+export const removeContact = filter => Contact.findByIdAndDelete(filter);
+export const updateCont = (filter, data) => Contact.findOneAndUpdate(filter, data, {new: true});
 
