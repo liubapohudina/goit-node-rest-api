@@ -7,7 +7,9 @@ import HttpError from "../helpers/HttpError.js";
 export const getAllContacts = async (req, res, next) => {
     try {
         const { _id: owner } = req.user;
-        const allContacts = await listContacts({ owner });
+        const { page = 1, limit = 20 } = req.query;
+        const skip = (page - 1) * limit;
+        const allContacts = await listContacts({ owner }, {skip, limit});
         res.json(allContacts);
     } catch (error) {
         next(error);
