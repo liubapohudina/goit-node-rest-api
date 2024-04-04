@@ -10,3 +10,8 @@ export const userSignInSchema = Joi.object({
     email: Joi.string().pattern(emailRegepxp).required(),
     password: Joi.string().min(6).required(),
 })
+
+export const userUpdateSub = Joi.object({
+    email: Joi.string().pattern(emailRegepxp),
+    subscription :Joi.string().valid('starter', 'pro', 'business')
+})

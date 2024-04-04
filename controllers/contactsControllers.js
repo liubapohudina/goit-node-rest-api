@@ -1,4 +1,4 @@
-import { listContacts, addContact, getContactById, removeContact, updateCont } from "../services/contactsServices.js";
+import { listContacts, listContactsCount, addContact, getContactById, removeContact, updateCont } from "../services/contactsServices.js";
 
 
 import HttpError from "../helpers/HttpError.js";
@@ -7,8 +7,15 @@ import HttpError from "../helpers/HttpError.js";
 export const getAllContacts = async (req, res, next) => {
     try {
         const { _id: owner } = req.user;
-        const allContacts = await listContacts({ owner });
-        res.json(allContacts);
+        const { page = 1, limit = 20, favorite } = req.query;
+        const skip = (page - 1) * limit;
+        let filter = { owner }
+        if (favorite && favorite === 'true') {
+            filter.favorite = true;
+        }
+        const allContacts = await listContacts(filter, { skip, limit });
+        const totalcount = await listContactsCount(filter);
+        res.json({ allContacts, total: totalcount });
     } catch (error) {
         next(error);
     }
