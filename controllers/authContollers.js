@@ -1,5 +1,5 @@
 import HttpError from "../helpers/HttpError.js";
-import { findUser, registerUser } from "../services/authServices.js";
+import { findUser, registerUser, updateUser } from "../services/authServices.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { configDotenv } from "dotenv";
@@ -46,6 +46,7 @@ export const fetchLoginUser = async (req, res, next) => {
             id
         };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
+        await updateUser({ _id: id }, { token });
         
         const responseBody = {
             token: token,
@@ -58,4 +59,21 @@ export const fetchLoginUser = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+}
+
+export const fetchCurrentUser = async (req, res) => {
+       const { email, subscription } = req.user;
+       res.status(201).json({email, subscription})
+}
+
+export const fetchLogoutUser = async (req, res) => {
+    const { _id } = req.user;
+    await updateUser({ _id }, { token: "" });
+    res.status(204).json({message: "No Content"});
+}
+export const fetchUpdateSubUser = async (req, res) => {
+    const { _id, email } = req.user;
+    const { subscription } = req.body;
+    await updateUser({ _id }, { subscription: subscription });
+    res.status(201).json({message: `User ${email} subscription changed to ${subscription}`})
 }
