@@ -55,7 +55,7 @@ export const fetchLoginUser = async (req, res, next) => {
                 subscription: user.subscription
             }
         };
-        res.status(201).json(responseBody);
+        res.status(200).json(responseBody);
     } catch (error) {
         next(error)
     }
