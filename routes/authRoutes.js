@@ -3,9 +3,10 @@ import { fetchRegisterUser, fetchLoginUser, fetchCurrentUser, fetchLogoutUser, f
 import { userSignInSchema, usersSignUpSchema, userUpdateSub } from '../schemas/usersSchemas.js';
 import validateBody from '../helpers/validateBody.js';
 import authenticate from '../midllewares/authenticate.js';
+import upload from "../midllewares/upload.js";
 
 const authRouter = express.Router();
-authRouter.post('/register', validateBody(usersSignUpSchema), fetchRegisterUser);
+authRouter.post('/register', upload.single("avatarURL"), validateBody(usersSignUpSchema), fetchRegisterUser);
 authRouter.post('/login', validateBody(userSignInSchema), fetchLoginUser);
 authRouter.get('/current', authenticate, fetchCurrentUser);
 authRouter.post('/logout', authenticate, fetchLogoutUser);
