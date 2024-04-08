@@ -3,6 +3,11 @@ import { findUser, registerUser, updateUser } from "../services/authServices.js"
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { configDotenv } from "dotenv";
+import gravatar from "gravatar";
+import path from "path";
+import fs from "fs/promises";
+
+const avatarPath = path.resolve("public", "avatars");
 
 configDotenv()
 
@@ -15,11 +20,16 @@ export const fetchRegisterUser = async (req, res, next) => {
         if (existingUser) {
             throw HttpError(409, "Email is already in use");
         }
+        // const { path: oldPath, filename } = req.file;
+        // const newPath = path.join(avatarPath, filename);
+        // await fs.rename(oldPath, newPath);
+        const avatarURL = gravatar.url(email);
         const hashPassword = await bcrypt.hash(password, 10);
-        const newUser = await registerUser({...req.body, password: hashPassword});
+        const newUser = await registerUser({...req.body, avatarURL: avatarURL, password: hashPassword});
         const responseBody = {
             user: {
                 email: newUser.email,
+                avatarURL: avatarURL,
                 subscription: newUser.subscription
             }
         };
