@@ -6,6 +6,7 @@ import { configDotenv } from "dotenv";
 import gravatar from "gravatar";
 import path from "path";
 import fs from "fs/promises";
+import Jimp from "jimp";
 
 const avatarPath = path.resolve("public", "avatars");
 
@@ -87,4 +88,24 @@ export const fetchUpdateSubUser = async (req, res) => {
     const { subscription } = req.body;
     await updateUser({ _id }, { subscription: subscription });
     res.status(201).json({message: `User ${email} subscription changed to ${subscription}`})
+}
+
+export const fetchUpdateUserAvatar = async (req, res) => {
+    const { _id} = req.user;
+    const { path: oldPath, filename } = req.file;
+    const newPath = path.join(avatarPath, filename);
+    const avatarURL = path.join("avatars", filename);
+    Jimp.read(oldPath)
+     .then((lenna) => {
+     return lenna
+      .resize(250, 250) 
+      .quality(60) 
+      .write(newPath);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+    await fs.rename(oldPath, newPath);
+    await updateUser({ _id }, { avatarURL: avatarURL });
+    res.status(201).json({message: `"avatarURL" : ${avatarURL}`})
 }

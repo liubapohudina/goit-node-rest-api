@@ -14,5 +14,7 @@ export const userSignInSchema = Joi.object({
 
 export const userUpdateSub = Joi.object({
     email: Joi.string().pattern(emailRegepxp),
-    subscription :Joi.string().valid('starter', 'pro', 'business')
-})
+    subscription: Joi.string().valid('starter', 'pro', 'business')
+});
+
+
