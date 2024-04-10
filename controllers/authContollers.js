@@ -75,7 +75,7 @@ export const fetchLoginUser = async (req, res, next) => {
 
 export const fetchCurrentUser = async (req, res) => {
        const { email, subscription } = req.user;
-       res.status(201).json({email, subscription})
+       res.status(200).json({email, subscription})
 }
 
 export const fetchLogoutUser = async (req, res) => {
@@ -91,6 +91,9 @@ export const fetchUpdateSubUser = async (req, res) => {
 }
 
 export const fetchUpdateUserAvatar = async (req, res) => {
+    if (!req.file) {
+       return res.status(400).json({ error: "File not found" })
+    }
     const { _id} = req.user;
     const { path: oldPath, filename } = req.file;
     const newPath = path.join(avatarPath, filename);
@@ -103,9 +106,9 @@ export const fetchUpdateUserAvatar = async (req, res) => {
       .write(newPath);
   })
   .catch((err) => {
-    console.error(err);
+    throw err(err);
   });
     await fs.rename(oldPath, newPath);
     await updateUser({ _id }, { avatarURL: avatarURL });
-    res.status(201).json({message: `"avatarURL" : ${avatarURL}`})
+    res.status(200).json({avatarURL : avatarURL})
 }
