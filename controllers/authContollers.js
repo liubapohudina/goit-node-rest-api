@@ -50,16 +50,23 @@ export const fetchRegisterUser = async (req, res, next) => {
     }
 };
 
-export const fetchUserVerify = async (req, res) => {
-    const { verificationToken } = req.params;
-    const user = await findUser({ verificationToken });
-    if (!user) {
-        throw HttpError(404, "Not found")
+export const fetchUserVerify = async (req, res, next) => {
+    try {
+        const { verificationToken } = req.params;
+        const user = await findUser({ verificationToken });
+        if (!user) {
+            throw HttpError(404, "Not found")
+        }
+        if (user.verify) {
+            throw HttpError(404, "Not found")
+        }
+        await updateUser({ _id: user._id }, { verify: true, verificationToken: null })
+        res.status(200).json({
+            message: 'Verification successful'
+        })
+    } catch (error) {
+        next(error)
     }
-    await updateUser({ _id: user._id }, { verify: true, verificationToken: null })
-    res.status(200).json({
-       message : 'Verification successful'
-    })
 }
 
 export const fetchResendVerify = async (req, res, next) => {
