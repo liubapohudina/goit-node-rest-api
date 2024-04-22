@@ -9,7 +9,7 @@ import path from "path";
 import fs from "fs/promises";
 import Jimp from "jimp";
 import { nanoid } from "nanoid";
-import { verify } from "crypto";
+
 
 const avatarPath = path.resolve("public", "avatars");
 
